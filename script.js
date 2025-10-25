@@ -1614,16 +1614,19 @@ class TimeZoneConverter {
 
     // DCG预设
     applyPresetDCG() {
-        // 设置主国家为美国东部
-        this.selectedMainCountry = '美国东部';
-        this.updateMainTimeInput();
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
         
         // 设置时间个数为4
         document.getElementById('timeCount').value = 4;
         this.generateTimeInputs();
         
-        // 设置时间
-        const times = ['08:00', '11:00', '13:00', '14:00'];
+        // 设置时间（北京时间）
+        const times = ['20:00', '23:00', '01:00', '02:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
@@ -1656,16 +1659,19 @@ class TimeZoneConverter {
 
     // ORBIS欧洲预设
     applyPresetOrbisEurope() {
-        // 设置主国家为美国东部
-        this.selectedMainCountry = '美国东部';
-        this.updateMainTimeInput();
+        // 设置主国家为中国（中国时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
         
         // 设置时间个数为5
         document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
-        // 设置时间
-        const times = ['10:00', '12:00', '13:00', '14:00', '15:00'];
+        // 设置时间（中国时间）
+        const times = ['22:00', '00:00', '01:00', '02:00', '03:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
