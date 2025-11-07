@@ -1336,12 +1336,12 @@ class TimeZoneConverter {
         this.updateCountryStatus();
         this.updateTimezoneStatus();
         
-        // 设置时间个数为4
-        document.getElementById('timeCount').value = 4;
+        // 设置时间个数为5
+        document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
         // 填充预设时间
-        const times = ['18:00', '19:00', '19:20', '21:00'];
+        const times = ['20:00', '23:00', '00:00', '00:20', '01:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
@@ -1359,19 +1359,19 @@ class TimeZoneConverter {
         this.updateCountryStatus();
         this.updateTimezoneStatus();
         
-        // 设置时间个数为4
-        document.getElementById('timeCount').value = 4;
+        // 设置时间个数为5
+        document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
         // 填充预设时间
-        const times = ['00:00', '01:00', '01:20', '03:00'];
+        const times = ['14:00', '15:00', '17:00', '17:20', '18:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
         this.setMainTime();
         
         // 显示成功提示
-        this.showPresetSuccess('ZUES 美洲');
+        this.showPresetSuccess('ZUES 亚洲');
     }
 
     fillTimeInputs(times) {
