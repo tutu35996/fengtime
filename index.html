@@ -4,96 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全球时区转换工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🌍 全球时区转换工具</h1>
-            <p>设置主国家时间，自动转换为其他国家的当地时间</p>
-        </header>
+    <!-- Main Content - Time Zone Converter -->
+    <div class="main-wrapper">
+        <div class="container">
+            <header>
+                <h1><i class="fas fa-globe"></i> 全球时区转换工具</h1>
+                <p>设置主国家时间，自动转换为其他国家的当地时间</p>
+            </header>
 
-        <div class="main-content">
-            <!-- 左侧内容 -->
-            <div class="left-content">
-                <!-- 主国家时间设置 -->
+            <div class="main-content">
+                <!-- 左侧内容 -->
+                <div class="left-content">
+                    <!-- 主国家时间设置 -->
+                    <div class="section">
+                        <h2>主国家时间设置</h2>
+                        
+                        <!-- 预设模板 -->
+                        <div class="preset-section">
+                            <h3>预设模板</h3>
+                            <div class="preset-buttons">
+                                <button id="presetAG" class="btn btn-preset">AG(欧洲)</button>
+                                <button id="presetSW" class="btn btn-preset">SW(欧洲)</button>
+                                <button id="presetNewEra" class="btn btn-preset">新时代(欧洲)</button>
+                                <button id="presetPictetEurope" class="btn btn-preset">PICTET(欧洲)</button>
+                                <button id="presetPictetSouthAmerica" class="btn btn-preset">PICTET(南美洲)</button>
+                                <button id="presetPictetOceania" class="btn btn-preset">PICTET(大洋洲)</button>
+                                <button id="presetPictetAsia" class="btn btn-preset">PICTET(亚洲)</button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="mainCountrySearch">搜索主国家：</label>
+                                <input type="text" id="mainCountrySearch" placeholder="输入国家名称搜索..." autocomplete="off">
+                                <div id="mainCountryDropdown" class="dropdown"></div>
+                            </div>
+                            <div class="input-group">
+                                <label for="timeCount">主时间个数：</label>
+                                <input type="number" id="timeCount" min="1" max="10" value="4" placeholder="输入时间个数">
+                            </div>
+                        </div>
+                        <div id="mainTimesContainer" class="main-times-container">
+                            <!-- 动态生成的时间输入框 -->
+                        </div>
+                        <div class="main-time-controls">
+                            <button id="setMainTime" class="btn btn-primary">设置主时间</button>
+                            <div class="status-group">
+                                <div id="countryStatus" class="status-item">
+                                    <span class="status-label">国家</span>
+                                    <span class="status-icon"><i class="fas fa-clock"></i></span>
+                                    <span class="status-text">未设置</span>
+                                </div>
+                                <div id="timeStatus" class="status-item">
+                                    <span class="status-label">时间</span>
+                                    <span class="status-icon"><i class="fas fa-clock"></i></span>
+                                    <span class="status-text">未设置</span>
+                                </div>
+                                <div id="timezoneStatus" class="status-item">
+                                    <span class="status-label">时区</span>
+                                    <span class="status-icon"><i class="fas fa-globe"></i></span>
+                                    <span class="status-text">未查询</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 目标国家设置 -->
                 <div class="section">
-                    <h2>主国家时间设置</h2>
-                    
-                    <!-- 预设模板 -->
-                    <div class="preset-section">
-                        <h3>预设模板</h3>
-                        <div class="preset-buttons">
-                            <button id="presetEurope" class="btn btn-preset">ZUES 欧洲</button>
-                            <button id="presetAmerica" class="btn btn-preset">ZUES 亚洲</button>
-                            <button id="presetAG" class="btn btn-preset">AG</button>
-                            <button id="presetDCG" class="btn btn-preset">DCG</button>
-                            <button id="presetGemini" class="btn btn-preset">Two Sigma</button>
-                            <button id="presetOrbisEurope" class="btn btn-preset">ORBIS 欧洲</button>
-                            <button id="presetOrbisAsia" class="btn btn-preset">ORBIS 亚洲</button>
+                    <h2>目标国家设置</h2>
+                    <div class="target-countries">
+                        <div class="input-group">
+                            <label for="targetCountrySearch">搜索目标国家：</label>
+                            <input type="text" id="targetCountrySearch" placeholder="输入国家名称搜索，点击选择自动添加..." autocomplete="off">
+                            <div id="targetCountryDropdown" class="dropdown"></div>
                         </div>
                     </div>
-                    
-                    <div class="input-group">
-                        <label for="mainCountrySearch">搜索主国家：</label>
-                        <input type="text" id="mainCountrySearch" placeholder="输入国家名称搜索..." autocomplete="off">
-                        <div id="mainCountryDropdown" class="dropdown"></div>
-                    </div>
-                    <div class="input-group">
-                        <label for="timeCount">主时间个数：</label>
-                        <input type="number" id="timeCount" min="1" max="10" value="4" placeholder="输入时间个数">
-                    </div>
-                    <div id="mainTimesContainer" class="main-times-container">
-                        <!-- 动态生成的时间输入框 -->
-                    </div>
-                    <div class="main-time-controls">
-                        <button id="setMainTime" class="btn btn-primary">设置主时间</button>
-                        <div class="status-group">
-                            <div id="countryStatus" class="status-item">
-                                <span class="status-label">国家</span>
-                                <span class="status-icon">⏰</span>
-                                <span class="status-text">未设置</span>
-                            </div>
-                            <div id="timeStatus" class="status-item">
-                                <span class="status-label">时间</span>
-                                <span class="status-icon">⏰</span>
-                                <span class="status-text">未设置</span>
-                            </div>
-                            <div id="timezoneStatus" class="status-item">
-                                <span class="status-label">时区</span>
-                                <span class="status-icon">🌍</span>
-                                <span class="status-text">未查询</span>
-                            </div>
-                        </div>
+                    <div id="targetList" class="target-list"></div>
+                </div>
+
+                <!-- 时间转换结果 -->
+                <div class="section">
+                    <h2>时间转换结果</h2>
+                    <button id="refreshAllBtn" class="btn btn-primary" onclick="timeConverter.refreshAllTimes()" style="margin-bottom: 8px;">
+                        <i class="fas fa-sync-alt"></i> 刷新所有时间
+                    </button>
+                    <div id="timeResults" class="time-results">
+                        <p class="no-data">请先设置主国家时间和目标国家</p>
                     </div>
                 </div>
-            </div>
 
-            <!-- 目标国家设置 -->
-            <div class="section">
-                <h2>目标国家设置</h2>
-                <div class="target-countries">
-                    <div class="input-group">
-                        <label for="targetCountrySearch">搜索目标国家：</label>
-                        <input type="text" id="targetCountrySearch" placeholder="输入国家名称搜索，点击选择自动添加..." autocomplete="off">
-                        <div id="targetCountryDropdown" class="dropdown"></div>
+                <!-- 右侧：全球地区选择 -->
+                <div class="right-content section">
+                    <h2>全球地区</h2>
+                    <p class="section-desc">点击国家按钮快速添加到目标国家</p>
+                    <div id="regionSelector" class="region-selector">
+                        <!-- 动态生成按大洲分类的国家按钮 -->
                     </div>
-                </div>
-                <div id="targetList" class="target-list"></div>
-            </div>
-
-            <!-- 时间转换结果 -->
-            <div class="section">
-                <h2>时间转换结果</h2>
-                <button id="refreshAllBtn" class="btn btn-primary" onclick="timeConverter.refreshAllTimes()" style="margin-bottom: 15px;">
-                    🔄 刷新所有时间
-                </button>
-                <div id="timeResults" class="time-results">
-                    <p class="no-data">请先设置主国家时间和目标国家</p>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- 免责声明 -->

@@ -261,6 +261,45 @@ const countryTimezones = {
     '北极点': { timezone: 'Arctic/North_Pole', flag: '🇦🇶', displayName: '北极点时间' },
 };
 
+// 按大洲分类的国家列表
+const countriesByRegion = {
+    '亚洲': {
+        '东亚': ['中国', '日本', '韩国', '朝鲜', '蒙古'],
+        '中亚': ['哈萨克斯坦', '乌兹别克斯坦', '吉尔吉斯斯坦', '塔吉克斯坦', '土库曼斯坦', '阿富汗'],
+        '南亚': ['巴基斯坦', '印度', '尼泊尔', '不丹', '孟加拉国', '斯里兰卡', '马尔代夫', '缅甸'],
+        '东南亚': ['泰国', '老挝', '柬埔寨', '越南', '马来西亚', '新加坡', '印度尼西亚', '文莱', '菲律宾', '东帝汶'],
+        '西亚': ['沙特阿拉伯', '阿联酋', '卡塔尔', '巴林', '科威特', '阿曼', '也门', '伊拉克', '伊朗', '以色列', '巴勒斯坦', '约旦', '黎巴嫩', '叙利亚', '格鲁吉亚', '亚美尼亚', '阿塞拜疆', '土耳其', '塞浦路斯', '希腊']
+    },
+    '欧洲': {
+        '北欧': ['冰岛', '爱尔兰', '英国', '丹麦', '瑞典', '挪威', '芬兰', '爱沙尼亚', '拉脱维亚', '立陶宛'],
+        '西欧': ['葡萄牙', '西班牙', '法国', '比利时', '荷兰', '卢森堡', '德国', '奥地利', '瑞士', '列支敦士登'],
+        '南欧': ['意大利', '圣马力诺', '梵蒂冈', '马耳他', '摩纳哥', '安道尔', '希腊', '塞浦路斯'],
+        '中欧': ['波兰', '捷克', '斯洛伐克', '匈牙利', '斯洛文尼亚', '克罗地亚', '波斯尼亚和黑塞哥维那', '塞尔维亚', '黑山', '北马其顿', '阿尔巴尼亚', '科索沃'],
+        '东欧': ['保加利亚', '罗马尼亚', '摩尔多瓦', '乌克兰', '白俄罗斯', '俄罗斯/加里宁格勒', '俄罗斯/莫斯科', '俄罗斯/萨马拉', '俄罗斯/叶卡捷琳堡', '俄罗斯/新西伯利亚', '俄罗斯/克拉斯诺亚尔斯克', '俄罗斯/伊尔库茨克', '俄罗斯/雅库茨克', '俄罗斯/符拉迪沃斯托克', '俄罗斯/马加丹', '俄罗斯/堪察加']
+    },
+    '北美洲': {
+        '美国': ['美国阿拉斯加', '美国西部', '美国山地', '美国中部', '美国东部'],
+        '加拿大': ['加拿大西部', '加拿大中部', '加拿大东部', '加拿大纽芬兰'],
+        '墨西哥及中美洲': ['墨西哥西部', '墨西哥首都/中部', '墨西哥东部', '危地马拉', '伯利兹', '萨尔瓦多', '洪都拉斯', '尼加拉瓜', '哥斯达黎加', '巴拿马'],
+        '加勒比海地区': ['古巴', '牙买加', '海地', '多米尼加', '波多黎各', '特立尼达和多巴哥', '巴巴多斯', '圣基茨和尼维斯', '安提瓜和巴布达', '多米尼克', '圣卢西亚', '圣文森特和格林纳丁斯', '格林纳达', '巴哈马', '百慕大'],
+        '其他': ['格陵兰']
+    },
+    '南美洲': {
+        '南美洲': ['巴西', '阿根廷', '智利', '乌拉圭', '巴拉圭', '玻利维亚', '秘鲁', '厄瓜多尔', '哥伦比亚', '委内瑞拉', '圭亚那', '苏里南', '法属圭亚那']
+    },
+    '非洲': {
+        '北非': ['阿尔及利亚', '突尼斯', '利比亚', '埃及', '苏丹', '南苏丹'],
+        '东非': ['埃塞俄比亚', '厄立特里亚', '吉布提', '索马里', '肯尼亚', '乌干达', '坦桑尼亚', '卢旺达', '布隆迪'],
+        '中非': ['刚果民主共和国', '刚果共和国', '中非', '乍得', '喀麦隆'],
+        '西非': ['尼日利亚', '尼日尔', '贝宁', '多哥', '加纳', '布基纳法索', '马里', '塞内加尔', '冈比亚', '几内亚比绍', '几内亚', '塞拉利昂', '利比里亚', '科特迪瓦', '加蓬', '赤道几内亚', '圣多美和普林西比'],
+        '南非': ['安哥拉', '赞比亚', '津巴布韦', '博茨瓦纳', '纳米比亚', '南非', '莱索托', '斯威士兰', '马达加斯加', '毛里求斯', '塞舌尔', '科摩罗', '马约特', '留尼汪']
+    },
+    '大洋洲': {
+        '澳大利亚': ['澳大利亚东部', '澳大利亚西部', '澳大利亚中部'],
+        '新西兰及太平洋': ['新西兰', '巴布亚新几内亚', '所罗门群岛', '瓦努阿图', '新喀里多尼亚', '斐济', '汤加', '萨摩亚', '基里巴斯', '基里巴斯/东部', '图瓦卢', '瑙鲁', '马绍尔群岛', '密克罗尼西亚/楚克州', '密克罗尼西亚/波纳佩州', '帕劳', '关岛', '北马里亚纳群岛', '美属萨摩亚', '库克群岛', '法属波利尼西亚', '皮特凯恩群岛', '复活节岛', '加拉帕戈斯群岛', '夏威夷']
+    }
+};
+
 class TimeZoneConverter {
     constructor() {
         this.mainCountry = null;
@@ -278,6 +317,7 @@ class TimeZoneConverter {
         this.bindEvents();
         this.generateTimeInputs();
         this.updateMainTimeStatus();
+        this.initRegionSelector();
     }
 
     bindEvents() {
@@ -329,32 +369,32 @@ class TimeZoneConverter {
         });
 
         // 预设按钮事件
-        document.getElementById('presetEurope').addEventListener('click', () => {
-            this.applyPresetEurope();
-        });
-
-        document.getElementById('presetAmerica').addEventListener('click', () => {
-            this.applyPresetAmerica();
-        });
-
         document.getElementById('presetAG').addEventListener('click', () => {
             this.applyPresetAG();
         });
 
-        document.getElementById('presetDCG').addEventListener('click', () => {
-            this.applyPresetDCG();
+        document.getElementById('presetSW').addEventListener('click', () => {
+            this.applyPresetSW();
         });
 
-        document.getElementById('presetGemini').addEventListener('click', () => {
-            this.applyPresetGemini();
+        document.getElementById('presetNewEra').addEventListener('click', () => {
+            this.applyPresetNewEra();
         });
 
-        document.getElementById('presetOrbisEurope').addEventListener('click', () => {
-            this.applyPresetOrbisEurope();
+        document.getElementById('presetPictetEurope').addEventListener('click', () => {
+            this.applyPresetPictetEurope();
         });
 
-        document.getElementById('presetOrbisAsia').addEventListener('click', () => {
-            this.applyPresetOrbisAsia();
+        document.getElementById('presetPictetSouthAmerica').addEventListener('click', () => {
+            this.applyPresetPictetSouthAmerica();
+        });
+
+        document.getElementById('presetPictetOceania').addEventListener('click', () => {
+            this.applyPresetPictetOceania();
+        });
+
+        document.getElementById('presetPictetAsia').addEventListener('click', () => {
+            this.applyPresetPictetAsia();
         });
     }
 
@@ -485,7 +525,7 @@ class TimeZoneConverter {
         const successDiv = document.createElement('div');
         successDiv.className = 'main-selected';
         successDiv.innerHTML = `
-            <span class="icon">✓</span>
+            <span class="icon"><i class="fas fa-check-circle"></i></span>
             <span>已选择 ${countryTimezones[country].flag} ${country}</span>
         `;
         
@@ -616,7 +656,7 @@ class TimeZoneConverter {
         const successDiv = document.createElement('div');
         successDiv.className = 'add-success-inline';
         successDiv.innerHTML = `
-            <span class="icon">✓</span>
+            <span class="icon"><i class="fas fa-check-circle"></i></span>
             <span>已添加 ${countryTimezones[country].flag} ${country}</span>
         `;
         
@@ -659,6 +699,10 @@ class TimeZoneConverter {
 
     async convertTimes() {
         if (!this.mainCountry || !this.mainTimes.length || this.targetCountries.length === 0) {
+            const results = document.getElementById('timeResults');
+            if (results) {
+                results.innerHTML = '<p class="no-data">请先设置主国家时间和目标国家</p>';
+            }
             return;
         }
         
@@ -668,11 +712,18 @@ class TimeZoneConverter {
         // 显示主时间
         const mainCard = document.createElement('div');
         mainCard.className = 'time-result-card';
+        mainCard.dataset.country = this.mainCountry;
+        mainCard.dataset.isMain = 'true';
         mainCard.innerHTML = `
-            <h3>
-                ${countryTimezones[this.mainCountry].flag} ${countryTimezones[this.mainCountry].displayName} (主时间)
-                <span class="utc-info">查询中...</span>
-            </h3>
+            <div class="time-result-card-header">
+                <h3>
+                    ${countryTimezones[this.mainCountry].flag} ${countryTimezones[this.mainCountry].displayName} (主时间)
+                    <span class="utc-info">查询中...</span>
+                </h3>
+                <button class="btn-copy" onclick="timeConverter.copyTimeCard(this.closest('.time-result-card'))" title="复制">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
             <div class="multiple-times">
                 ${this.mainTimes.map(time => `<span class="time-chip">${time}</span>`).join('')}
             </div>
@@ -688,11 +739,18 @@ class TimeZoneConverter {
             targetCard.className = 'time-result-card';
             
             // 显示加载状态
+            targetCard.dataset.country = country;
+            targetCard.dataset.isMain = 'false';
             targetCard.innerHTML = `
-                <h3>
-                    ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
-                    <span class="utc-info">查询中...</span>
-                </h3>
+                <div class="time-result-card-header">
+                    <h3>
+                        ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
+                        <span class="utc-info">查询中...</span>
+                    </h3>
+                    <button class="btn-copy" onclick="timeConverter.copyTimeCard(this.closest('.time-result-card'))" title="复制">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
                 <div class="multiple-times">
                     <span class="time-chip loading">转换中...</span>
                 </div>
@@ -731,11 +789,16 @@ class TimeZoneConverter {
                 setTimeout(() => {
                     // 更新显示结果
                     targetCard.innerHTML = `
-                        <h3>
-                            ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
-                            <span class="utc-info">${utcOffset}</span>
-                            <span class="timezone-status-header">${timezoneStatus}</span>
-                        </h3>
+                        <div class="time-result-card-header">
+                            <h3>
+                                ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
+                                <span class="utc-info">${utcOffset}</span>
+                                <span class="timezone-status-header">${timezoneStatus}</span>
+                            </h3>
+                            <button class="btn-copy" onclick="timeConverter.copyTimeCard(this.closest('.time-result-card'))" title="复制">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                         <div class="multiple-times">
                             ${convertedTimes.map(time => `<span class="time-chip">${time}</span>`).join('')}
                         </div>
@@ -805,7 +868,7 @@ class TimeZoneConverter {
         }
     }
 
-    async getTimezoneDataWithRetry(timezone, maxRetries = 3, retryDelay = 3000) {
+    async getTimezoneDataWithRetry(timezone, maxRetries = 3, retryDelay = 1000) {
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 return await this.getTimezoneData(timezone);
@@ -813,10 +876,17 @@ class TimeZoneConverter {
                 console.error(`第${attempt}次查询时区数据失败 ${timezone}:`, error);
                 
                 if (attempt === maxRetries) {
-                    throw new Error('网络繁忙，稍后再试');
+                    // 如果API失败，尝试使用备用方法
+                    console.warn(`API查询失败，使用备用方法计算时区 ${timezone}`);
+                    const fallbackOffset = this.getTimezoneOffsetMinutes(timezone) * 60;
+                    return {
+                        utc_offset_seconds: fallbackOffset,
+                        timezone: timezone,
+                        isFixedTimezone: false
+                    };
                 }
                 
-                // 等待3秒后重试
+                // 等待1秒后重试（减少等待时间）
                 await new Promise(resolve => setTimeout(resolve, retryDelay));
             }
         }
@@ -830,6 +900,39 @@ class TimeZoneConverter {
             console.log(`使用缓存的时区数据 ${timezone}:`, cached.data);
             return cached.data;
         }
+        
+        // 有夏令时的时区列表 - 必须使用实时查询
+        const dstTimezones = [
+            // 北美（有夏令时）
+            'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
+            'America/Phoenix', 'America/Anchorage', 'America/Toronto', 'America/Vancouver',
+            'America/Winnipeg', 'America/Edmonton', 'America/Halifax', 'America/St_Johns',
+            'America/Mexico_City', 'America/Cancun', 'America/Tijuana',
+            
+            // 欧洲（有夏令时）
+            'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Rome', 'Europe/Madrid',
+            'Europe/Amsterdam', 'Europe/Brussels', 'Europe/Vienna', 'Europe/Prague',
+            'Europe/Warsaw', 'Europe/Stockholm', 'Europe/Copenhagen', 'Europe/Oslo',
+            'Europe/Helsinki', 'Europe/Athens', 'Europe/Lisbon', 'Europe/Dublin',
+            'Europe/Budapest', 'Europe/Bucharest', 'Europe/Sofia', 'Europe/Zagreb',
+            'Europe/Belgrade', 'Europe/Kiev', 'Europe/Riga', 'Europe/Tallinn',
+            'Europe/Vilnius', 'Europe/Luxembourg', 'Europe/Monaco', 'Europe/Andorra',
+            'Europe/San_Marino', 'Europe/Vatican', 'Europe/Malta',
+            
+            // 大洋洲（有夏令时）
+            'Australia/Sydney', 'Australia/Melbourne', 'Australia/Brisbane', 'Australia/Adelaide',
+            'Australia/Perth', 'Australia/Darwin', 'Australia/Hobart', 'Pacific/Auckland',
+            
+            // 南美（部分有夏令时）
+            'America/Santiago', 'America/Sao_Paulo', 'America/Montevideo',
+            
+            // 其他
+            'Asia/Jerusalem', 'Asia/Beirut', 'Asia/Damascus', 'Asia/Nicosia',
+            'Atlantic/Azores', 'Atlantic/Canary', 'Atlantic/Madeira'
+        ];
+        
+        // 如果是有夏令时的时区，强制使用实时查询，跳过固定时区检查
+        const hasDST = dstTimezones.includes(timezone);
         
         // 固定时区国家列表 - 不参与实时查询（不使用夏令时的国家）
         const fixedTimezones = {
@@ -1005,8 +1108,8 @@ class TimeZoneConverter {
             'Asia/Kamchatka': 43200, // 俄罗斯/堪察加 UTC+12
         };
         
-        // 检查是否为固定时区
-        if (fixedTimezones[timezone] !== undefined) {
+        // 检查是否为固定时区（如果是有夏令时的时区，跳过此检查）
+        if (!hasDST && fixedTimezones[timezone] !== undefined) {
             const data = {
                 utc_offset_seconds: fixedTimezones[timezone],
                 timezone: timezone,
@@ -1021,51 +1124,128 @@ class TimeZoneConverter {
             return data;
         }
         
-        // 非固定时区，使用实时查询
-        try {
-            // 使用简单快速的WorldTimeAPI
-            const response = await fetch(`https://worldtimeapi.org/api/timezone/${timezone}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+        // 非固定时区或有夏令时的时区，使用实时查询
+        // 使用多个API源，按顺序尝试
+        const timeout = 5000; // 5秒超时
+        
+        // 创建带超时的fetch函数
+        const fetchWithTimeout = async (url, options = {}) => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                return response;
+            } catch (error) {
+                clearTimeout(timeoutId);
+                throw error;
             }
-            
-            const data = await response.json();
-            
-            // 解析UTC偏移
-            const offset = data.utc_offset;
-            const isNegative = offset.startsWith('-');
-            const cleanOffset = offset.replace(/[+-]/, '');
-            const [hours, minutes] = cleanOffset.split(':').map(Number);
-            const utc_offset_seconds = (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
-            
-            const timezoneData = {
-                utc_offset_seconds: utc_offset_seconds,
+        };
+        
+        const apiSources = [
+            // API 1: WorldTimeAPI (主要)
+            async () => {
+                const response = await fetchWithTimeout(`https://worldtimeapi.org/api/timezone/${timezone}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                const offset = data.utc_offset;
+                const isNegative = offset.startsWith('-');
+                const cleanOffset = offset.replace(/[+-]/, '');
+                const [hours, minutes] = cleanOffset.split(':').map(Number);
+                return (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
+            },
+            // API 2: TimeAPI.io (备用1)
+            async () => {
+                const response = await fetchWithTimeout(`https://timeapi.io/api/Time/current/zone?timeZone=${timezone}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                // TimeAPI.io 返回格式不同，需要计算偏移
+                const now = new Date();
+                const utcTime = new Date(now.toUTCString());
+                const localTime = new Date(data.dateTime);
+                const offsetMs = localTime.getTime() - utcTime.getTime();
+                return Math.round(offsetMs / 1000);
+            },
+            // API 3: 使用另一个WorldTimeAPI镜像（备用2）
+            async () => {
+                // 再次尝试WorldTimeAPI（可能是网络临时问题）
+                const response = await fetchWithTimeout(`https://worldtimeapi.org/api/timezone/${timezone}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                const offset = data.utc_offset;
+                const isNegative = offset.startsWith('-');
+                const cleanOffset = offset.replace(/[+-]/, '');
+                const [hours, minutes] = cleanOffset.split(':').map(Number);
+                return (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
+            }
+        ];
+        
+        // 尝试所有API源
+        let lastError = null;
+        for (let i = 0; i < apiSources.length; i++) {
+            try {
+                const utc_offset_seconds = await apiSources[i]();
+                
+                const timezoneData = {
+                    utc_offset_seconds: utc_offset_seconds,
+                    timezone: timezone,
+                    isFixedTimezone: false
+                };
+                
+                // 缓存实时查询数据
+                this.timezoneCache.set(cacheKey, {
+                    data: timezoneData,
+                    timestamp: Date.now()
+                });
+                
+                console.log(`成功获取时区数据 ${timezone} (API ${i + 1}):`, {
+                    utc_offset_seconds: utc_offset_seconds
+                });
+                
+                return timezoneData;
+            } catch (error) {
+                console.warn(`API ${i + 1} 查询失败 ${timezone}:`, error);
+                lastError = error;
+                // 继续尝试下一个API
+            }
+        }
+        
+        // 所有API都失败，如果有夏令时，不允许使用备用方法
+        if (hasDST) {
+            throw new Error(`无法获取有夏令时的时区数据 ${timezone}，所有API查询均失败`);
+        }
+        
+        // 对于非夏令时时区，使用备用方法
+        console.warn(`所有API失败，使用备用方法计算时区 ${timezone}`);
+        const fallbackOffset = this.getTimezoneOffsetMinutes(timezone) * 60;
+        if (fallbackOffset !== 0) {
+            const fallbackData = {
+                utc_offset_seconds: fallbackOffset,
                 timezone: timezone,
                 isFixedTimezone: false
             };
-            
-            // 缓存实时查询数据
+            // 缓存备用数据
             this.timezoneCache.set(cacheKey, {
-                data: timezoneData,
+                data: fallbackData,
                 timestamp: Date.now()
             });
-            
-            console.log(`成功获取时区数据 ${timezone}:`, {
-                utc_offset: offset,
-                utc_offset_seconds: utc_offset_seconds
-            });
-            
-            return timezoneData;
-        } catch (error) {
-            console.error(`获取时区数据失败 ${timezone}:`, error);
-            throw error;
+            console.log(`使用备用时区数据 ${timezone}:`, fallbackData);
+            return fallbackData;
         }
+        
+        throw lastError || new Error(`无法获取时区数据 ${timezone}`);
     }
 
 
@@ -1095,6 +1275,41 @@ class TimeZoneConverter {
         }
     }
 
+    // 复制时间卡片内容到剪贴板
+    copyTimeCard(card) {
+        const country = card.dataset.country;
+        const isMain = card.dataset.isMain === 'true';
+        const timeChips = card.querySelectorAll('.time-chip:not(.loading):not(.error)');
+        const times = Array.from(timeChips).map(chip => chip.textContent.trim()).filter(t => t && t !== '--:--');
+        
+        if (!country || times.length === 0) {
+            this.showError('暂无有效时间可复制');
+            return;
+        }
+        
+        const title = isMain ? `${country} (主时间)` : `${country}交易时间`;
+        let text = `• ${title}\n`;
+        times.forEach((time, i) => {
+            text += `信号${i + 1}:  ${time}\n`;
+        });
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = card.querySelector('.btn-copy');
+            if (btn) {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                }, 1500);
+            }
+            this.showSuccess('已复制到剪贴板');
+        }).catch(() => {
+            this.showError('复制失败');
+        });
+    }
+
     formatUTCOffset(offsetSeconds, isFixedTimezone = false) {
         const hours = Math.floor(Math.abs(offsetSeconds) / 3600);
         const minutes = Math.floor((Math.abs(offsetSeconds) % 3600) / 60);
@@ -1109,27 +1324,103 @@ class TimeZoneConverter {
 
     getTimezoneOffsetMinutes(timezone) {
         // 时区偏移计算（相对于UTC的分钟数）
-        const offsets = {
-            'Asia/Shanghai': 480, // UTC+8
-            'America/New_York': -300, // UTC-5
-            'America/Los_Angeles': -480, // UTC-8
-            'Europe/London': 0, // UTC+0
-            'Asia/Tokyo': 540, // UTC+9
-            'Asia/Seoul': 540, // UTC+9
-            'Australia/Sydney': 600, // UTC+10
-            'Europe/Berlin': 60, // UTC+1
-            'Europe/Paris': 60, // UTC+1
-            'Europe/Moscow': 180, // UTC+3
-            'Asia/Kolkata': 330, // UTC+5:30
-            'America/Sao_Paulo': -180, // UTC-3
-            'America/Toronto': -300, // UTC-5
-            'Asia/Singapore': 480, // UTC+8
-            'Asia/Bangkok': 420, // UTC+7
-            'Asia/Dubai': 240, // UTC+4
-            'Africa/Johannesburg': 120, // UTC+2
-            'America/Mexico_City': -360 // UTC-6
+        // 首先尝试从固定时区列表获取
+        const fixedTimezones = {
+            'Asia/Shanghai': 480, 'Asia/Hong_Kong': 480, 'Asia/Macau': 480,
+            'Asia/Tokyo': 540, 'Asia/Seoul': 540, 'Asia/Singapore': 480,
+            'Asia/Kuala_Lumpur': 480, 'Asia/Bangkok': 420, 'Asia/Ho_Chi_Minh': 420,
+            'Asia/Kolkata': 330, 'Asia/Dubai': 240, 'Asia/Riyadh': 180,
+            'Asia/Manila': 480, 'Asia/Jakarta': 420, 'Asia/Dhaka': 360,
+            'America/New_York': -300, 'America/Los_Angeles': -480,
+            'America/Chicago': -360, 'America/Denver': -420,
+            'Europe/London': 0, 'Europe/Berlin': 60, 'Europe/Paris': 60,
+            'Europe/Moscow': 180, 'Europe/Rome': 60, 'Europe/Madrid': 60,
+            'Australia/Sydney': 600, 'Australia/Melbourne': 600,
+            'America/Sao_Paulo': -180, 'America/Toronto': -300,
+            'America/Mexico_City': -360, 'America/Argentina/Buenos_Aires': -180,
+            'Africa/Johannesburg': 120, 'Africa/Cairo': 120,
+            'Asia/Dubai': 240, 'Asia/Karachi': 300, 'Asia/Tehran': 210,
+            'Pacific/Auckland': 720, 'Pacific/Honolulu': -600
         };
-        return offsets[timezone] || 0;
+        
+        if (fixedTimezones[timezone] !== undefined) {
+            return fixedTimezones[timezone];
+        }
+        
+        // 如果不在列表中，尝试从timezone字符串推断（简单方法）
+        // 这是一个备用方案，可能不够准确，但至少能工作
+        const timezoneLower = timezone.toLowerCase();
+        if (timezoneLower.includes('asia')) {
+            // 大多数亚洲时区在UTC+5到UTC+9之间
+            if (timezoneLower.includes('tokyo') || timezoneLower.includes('seoul') || timezoneLower.includes('pyongyang')) {
+                return 540; // UTC+9
+            }
+            if (timezoneLower.includes('shanghai') || timezoneLower.includes('singapore') || timezoneLower.includes('manila')) {
+                return 480; // UTC+8
+            }
+            if (timezoneLower.includes('bangkok') || timezoneLower.includes('jakarta') || timezoneLower.includes('ho_chi_minh')) {
+                return 420; // UTC+7
+            }
+            if (timezoneLower.includes('dhaka') || timezoneLower.includes('yangon')) {
+                return 360; // UTC+6
+            }
+            if (timezoneLower.includes('karachi') || timezoneLower.includes('tashkent')) {
+                return 300; // UTC+5
+            }
+            if (timezoneLower.includes('dubai') || timezoneLower.includes('muscat')) {
+                return 240; // UTC+4
+            }
+            return 480; // 默认UTC+8
+        } else if (timezoneLower.includes('europe')) {
+            if (timezoneLower.includes('london') || timezoneLower.includes('dublin') || timezoneLower.includes('reykjavik')) {
+                return 0; // UTC+0
+            }
+            if (timezoneLower.includes('berlin') || timezoneLower.includes('paris') || timezoneLower.includes('rome') || timezoneLower.includes('madrid')) {
+                return 60; // UTC+1
+            }
+            if (timezoneLower.includes('moscow') || timezoneLower.includes('istanbul') || timezoneLower.includes('minsk')) {
+                return 180; // UTC+3
+            }
+            return 60; // 默认UTC+1
+        } else if (timezoneLower.includes('america')) {
+            if (timezoneLower.includes('new_york') || timezoneLower.includes('toronto') || timezoneLower.includes('havana')) {
+                return -300; // UTC-5
+            }
+            if (timezoneLower.includes('los_angeles') || timezoneLower.includes('vancouver') || timezoneLower.includes('tijuana')) {
+                return -480; // UTC-8
+            }
+            if (timezoneLower.includes('chicago') || timezoneLower.includes('mexico_city')) {
+                return -360; // UTC-6
+            }
+            if (timezoneLower.includes('denver') || timezoneLower.includes('phoenix')) {
+                return -420; // UTC-7
+            }
+            if (timezoneLower.includes('sao_paulo') || timezoneLower.includes('buenos_aires')) {
+                return -180; // UTC-3
+            }
+            return -300; // 默认UTC-5
+        } else if (timezoneLower.includes('australia') || timezoneLower.includes('pacific')) {
+            if (timezoneLower.includes('sydney') || timezoneLower.includes('melbourne') || timezoneLower.includes('auckland')) {
+                return 600; // UTC+10
+            }
+            if (timezoneLower.includes('honolulu')) {
+                return -600; // UTC-10
+            }
+            return 600; // 默认UTC+10
+        } else if (timezoneLower.includes('africa')) {
+            if (timezoneLower.includes('johannesburg') || timezoneLower.includes('cairo')) {
+                return 120; // UTC+2
+            }
+            if (timezoneLower.includes('lagos') || timezoneLower.includes('kinshasa')) {
+                return 60; // UTC+1
+            }
+            if (timezoneLower.includes('nairobi') || timezoneLower.includes('kampala')) {
+                return 180; // UTC+3
+            }
+            return 120; // 默认UTC+2
+        }
+        
+        return 0; // 如果无法推断，返回UTC+0
     }
 
     showError(message) {
@@ -1265,12 +1556,12 @@ class TimeZoneConverter {
         if (this.mainCountry) {
             // 已选择国家
             statusElement.className = 'status-item set';
-            iconElement.textContent = '✓';
+            iconElement.innerHTML = '<i class="fas fa-check-circle"></i>';
             textElement.textContent = this.mainCountry;
         } else {
             // 未选择国家
             statusElement.className = 'status-item not-set';
-            iconElement.textContent = '⏰';
+            iconElement.innerHTML = '<i class="fas fa-clock"></i>';
             textElement.textContent = '未设置';
         }
     }
@@ -1283,12 +1574,12 @@ class TimeZoneConverter {
         if (this.mainTimes.length > 0) {
             // 已设置时间
             statusElement.className = 'status-item set';
-            iconElement.textContent = '✓';
+            iconElement.innerHTML = '<i class="fas fa-check-circle"></i>';
             textElement.textContent = '已设置';
         } else {
             // 未设置时间
             statusElement.className = 'status-item not-set';
-            iconElement.textContent = '⏰';
+            iconElement.innerHTML = '<i class="fas fa-clock"></i>';
             textElement.textContent = '未设置';
         }
     }
@@ -1301,7 +1592,7 @@ class TimeZoneConverter {
         if (this.mainCountry) {
             // 显示查询中状态
             statusElement.className = 'status-item not-set';
-            iconElement.textContent = '🌍';
+            iconElement.innerHTML = '<i class="fas fa-globe"></i>';
             textElement.textContent = '查询中...';
             
             try {
@@ -1311,68 +1602,23 @@ class TimeZoneConverter {
                 
                 // 更新为已查询状态
                 statusElement.className = 'status-item set';
-                iconElement.textContent = '✓';
+                iconElement.innerHTML = '<i class="fas fa-check-circle"></i>';
                 textElement.textContent = utcOffset;
             } catch (error) {
                 console.error('查询时区失败:', error);
                 // 显示查询失败状态
                 statusElement.className = 'status-item not-set';
-                iconElement.textContent = '❌';
+                iconElement.innerHTML = '<i class="fas fa-times-circle"></i>';
                 textElement.textContent = error.message || '查询失败';
             }
         } else {
             // 未选择国家
             statusElement.className = 'status-item not-set';
-            iconElement.textContent = '🌍';
+            iconElement.innerHTML = '<i class="fas fa-globe"></i>';
             textElement.textContent = '未查询';
         }
     }
 
-    applyPresetEurope() {
-        // 设置主国家为中国
-        this.selectedMainCountry = '中国';
-        this.mainCountry = '中国';
-        document.getElementById('mainCountrySearch').value = '中国';
-        this.updateCountryStatus();
-        this.updateTimezoneStatus();
-        
-        // 设置时间个数为5
-        document.getElementById('timeCount').value = 5;
-        this.generateTimeInputs();
-        
-        // 填充预设时间
-        const times = ['20:00', '23:00', '00:00', '00:20', '01:00'];
-        this.fillTimeInputs(times);
-        
-        // 自动设置主时间
-        this.setMainTime();
-        
-        // 显示成功提示
-        this.showPresetSuccess('ZUES 欧洲');
-    }
-
-    applyPresetAmerica() {
-        // 设置主国家为中国
-        this.selectedMainCountry = '中国';
-        this.mainCountry = '中国';
-        document.getElementById('mainCountrySearch').value = '中国';
-        this.updateCountryStatus();
-        this.updateTimezoneStatus();
-        
-        // 设置时间个数为5
-        document.getElementById('timeCount').value = 5;
-        this.generateTimeInputs();
-        
-        // 填充预设时间
-        const times = ['14:00', '15:00', '17:00', '17:20', '18:00'];
-        this.fillTimeInputs(times);
-        
-        // 自动设置主时间
-        this.setMainTime();
-        
-        // 显示成功提示
-        this.showPresetSuccess('ZUES 亚洲');
-    }
 
     fillTimeInputs(times) {
         const timeInputs = document.querySelectorAll('.time-input');
@@ -1405,7 +1651,7 @@ class TimeZoneConverter {
         const successDiv = document.createElement('div');
         successDiv.className = 'preset-success';
         successDiv.innerHTML = `
-            <span class="icon">✓</span>
+            <span class="icon"><i class="fas fa-check-circle"></i></span>
             <span>已应用 ${presetName} 配置</span>
         `;
         
@@ -1488,7 +1734,7 @@ class TimeZoneConverter {
             this.showMessage('刷新失败，请重试', 'error');
         } finally {
             if (refreshBtn) {
-                refreshBtn.innerHTML = '🔄 刷新所有时间';
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新所有时间';
                 refreshBtn.disabled = false;
             }
         }
@@ -1561,11 +1807,16 @@ class TimeZoneConverter {
                 setTimeout(() => {
                     // 更新显示结果
                     targetCard.innerHTML = `
-                        <h3>
-                            ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
-                            <span class="utc-info">${utcOffset}</span>
-                            <span class="timezone-status-header">${timezoneStatus}</span>
-                        </h3>
+                        <div class="time-result-card-header">
+                            <h3>
+                                ${countryTimezones[country].flag} ${countryTimezones[country].displayName}
+                                <span class="utc-info">${utcOffset}</span>
+                                <span class="timezone-status-header">${timezoneStatus}</span>
+                            </h3>
+                            <button class="btn-copy" onclick="timeConverter.copyTimeCard(this.closest('.time-result-card'))" title="复制">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                         <div class="multiple-times">
                             ${convertedTimes.map(time => `<span class="time-chip">${time}</span>`).join('')}
                         </div>
@@ -1575,7 +1826,7 @@ class TimeZoneConverter {
                 // 恢复刷新按钮状态
                 const newRefreshBtn = targetCard.querySelector('.refresh-btn');
                 if (newRefreshBtn) {
-                    newRefreshBtn.innerHTML = '🔄';
+                    newRefreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
                     newRefreshBtn.disabled = false;
                     newRefreshBtn.classList.remove('loading');
                 }
@@ -1584,36 +1835,40 @@ class TimeZoneConverter {
             console.error('刷新失败:', error);
             // 恢复刷新按钮
             if (refreshBtn) {
-                refreshBtn.innerHTML = '🔄';
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
                 refreshBtn.disabled = false;
                 refreshBtn.classList.remove('loading');
             }
         }
     }
 
-    // AG预设
+    // AG(欧洲)预设
     applyPresetAG() {
-        // 设置主国家为阿联酋
-        this.selectedMainCountry = '阿联酋';
-        this.updateMainTimeInput();
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
         
         // 设置时间个数为5
         document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
-        // 设置时间
-        const times = ['14:00', '16:00', '19:00', '21:00', '22:00'];
+        // 设置时间（北京时间）
+        const times = ['18:00', '20:00', '23:00', '01:00', '02:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
         this.setMainTime();
         
         // 显示成功提示
-        this.showPresetSuccess('AG');
+        this.showPresetSuccess('AG(欧洲)');
     }
 
-    // DCG预设
-    applyPresetDCG() {
+
+    // SW(欧洲)预设
+    applyPresetSW() {
         // 设置主国家为中国（北京时间）
         this.selectedMainCountry = '中国';
         this.mainCountry = '中国';
@@ -1626,40 +1881,19 @@ class TimeZoneConverter {
         this.generateTimeInputs();
         
         // 设置时间（北京时间）
-        const times = ['20:00', '23:00', '01:00', '02:00'];
+        const times = ['20:00', '00:00', '02:00', '03:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
         this.setMainTime();
         
         // 显示成功提示
-        this.showPresetSuccess('DCG');
+        this.showPresetSuccess('SW(欧洲)');
     }
 
-    // 双子星预设
-    applyPresetGemini() {
-        // 设置主国家为阿联酋
-        this.selectedMainCountry = '阿联酋';
-        this.updateMainTimeInput();
-        
-        // 设置时间个数为4
-        document.getElementById('timeCount').value = 4;
-        this.generateTimeInputs();
-        
-        // 设置时间
-        const times = ['16:00', '19:00', '20:00', '21:00'];
-        this.fillTimeInputs(times);
-        
-        // 自动设置主时间
-        this.setMainTime();
-        
-        // 显示成功提示
-        this.showPresetSuccess('Two Sigma');
-    }
-
-    // ORBIS欧洲预设
-    applyPresetOrbisEurope() {
-        // 设置主国家为中国（中国时间）
+    // 新时代(欧洲)预设
+    applyPresetNewEra() {
+        // 设置主国家为中国（北京时间）
         this.selectedMainCountry = '中国';
         this.mainCountry = '中国';
         document.getElementById('mainCountrySearch').value = '中国';
@@ -1670,36 +1904,217 @@ class TimeZoneConverter {
         document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
-        // 设置时间（中国时间）
-        const times = ['22:00', '00:00', '01:00', '02:00', '03:00'];
+        // 设置时间（北京时间）
+        const times = ['20:00', '22:00', '00:00', '01:00', '02:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
         this.setMainTime();
         
         // 显示成功提示
-        this.showPresetSuccess('ORBIS 欧洲');
+        this.showPresetSuccess('新时代(欧洲)');
     }
 
-    // ORBIS亚洲预设
-    applyPresetOrbisAsia() {
-        // 设置主国家为印度尼西亚
-        this.selectedMainCountry = '印度尼西亚';
-        this.updateMainTimeInput();
+    // PICTET(欧洲)预设
+    applyPresetPictetEurope() {
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
         
         // 设置时间个数为5
         document.getElementById('timeCount').value = 5;
         this.generateTimeInputs();
         
-        // 设置时间
-        const times = ['14:00', '16:00', '17:00', '18:00', '19:00'];
+        // 设置时间（北京时间）
+        const times = ['17:30', '19:30', '22:30', '01:00', '02:00'];
         this.fillTimeInputs(times);
         
         // 自动设置主时间
         this.setMainTime();
         
         // 显示成功提示
-        this.showPresetSuccess('ORBIS 亚洲');
+        this.showPresetSuccess('PICTET(欧洲)');
+    }
+
+    // PICTET(南美洲)预设
+    applyPresetPictetSouthAmerica() {
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
+        
+        // 设置时间个数为5
+        document.getElementById('timeCount').value = 5;
+        this.generateTimeInputs();
+        
+        // 设置时间（北京时间）
+        const times = ['00:30', '02:30', '05:30', '09:00', '10:00'];
+        this.fillTimeInputs(times);
+        
+        // 自动设置主时间
+        this.setMainTime();
+        
+        // 显示成功提示
+        this.showPresetSuccess('PICTET(南美洲)');
+    }
+
+    // PICTET(大洋洲)预设
+    applyPresetPictetOceania() {
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
+        
+        // 设置时间个数为5
+        document.getElementById('timeCount').value = 5;
+        this.generateTimeInputs();
+        
+        // 设置时间（北京时间）
+        const times = ['12:30', '13:30', '14:30', '17:00', '18:00'];
+        this.fillTimeInputs(times);
+        
+        // 自动设置主时间
+        this.setMainTime();
+        
+        // 显示成功提示
+        this.showPresetSuccess('PICTET(大洋洲)');
+    }
+
+    // PICTET(亚洲)预设
+    applyPresetPictetAsia() {
+        // 设置主国家为中国（北京时间）
+        this.selectedMainCountry = '中国';
+        this.mainCountry = '中国';
+        document.getElementById('mainCountrySearch').value = '中国';
+        this.updateCountryStatus();
+        this.updateTimezoneStatus();
+        
+        // 设置时间个数为5
+        document.getElementById('timeCount').value = 5;
+        this.generateTimeInputs();
+        
+        // 设置时间（北京时间）
+        const times = ['17:30', '18:30', '19:30', '20:30', '22:00'];
+        this.fillTimeInputs(times);
+        
+        // 自动设置主时间
+        this.setMainTime();
+        
+        // 显示成功提示
+        this.showPresetSuccess('PICTET(亚洲)');
+    }
+
+    // 初始化区域选择器
+    initRegionSelector() {
+        const regionSelector = document.getElementById('regionSelector');
+        if (!regionSelector) return;
+
+        let html = '';
+        
+        // 遍历所有大洲
+        for (const [continent, subRegions] of Object.entries(countriesByRegion)) {
+            html += `<div class="region-continent" data-continent="${continent}">
+                <button class="btn btn-continent" data-continent="${continent}">
+                    <i class="fas fa-chevron-right continent-icon"></i>
+                    <span>${continent}</span>
+                </button>
+                <div class="region-continent-content" style="display: none;">`;
+            
+            // 遍历每个大洲下的子区域
+            for (const [subRegion, countries] of Object.entries(subRegions)) {
+                html += `<div class="region-subregion">
+                    <h4 class="region-subregion-title">${subRegion}</h4>
+                    <div class="region-buttons">`;
+                
+                // 为每个国家创建按钮
+                countries.forEach(country => {
+                    if (countryTimezones[country]) {
+                        const countryData = countryTimezones[country];
+                        html += `<button class="btn btn-region" data-country="${country}" title="${countryData.displayName}">
+                            ${countryData.flag} ${country}
+                        </button>`;
+                    }
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            html += `</div></div>`;
+        }
+        
+        regionSelector.innerHTML = html;
+        
+        // 绑定大洲展开/收起事件
+        regionSelector.querySelectorAll('.btn-continent').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const continent = btn.dataset.continent;
+                const content = btn.closest('.region-continent').querySelector('.region-continent-content');
+                const icon = btn.querySelector('.continent-icon');
+                
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-down');
+                    btn.closest('.region-continent').classList.add('expanded');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-right');
+                    btn.closest('.region-continent').classList.remove('expanded');
+                }
+            });
+        });
+        
+        // 绑定国家按钮点击事件
+        regionSelector.querySelectorAll('.btn-region').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const country = btn.dataset.country;
+                this.addCountryFromRegion(country);
+            });
+        });
+    }
+
+    // 从区域选择器添加国家
+    async addCountryFromRegion(country) {
+        if (!country || !countryTimezones[country]) {
+            this.showError('无效的国家');
+            return;
+        }
+        
+        if (country === this.mainCountry) {
+            this.showError('目标国家不能与主国家相同');
+            return;
+        }
+        
+        if (this.targetCountries.includes(country)) {
+            this.showError('该国家已存在');
+            return;
+        }
+        
+        this.targetCountries.push(country);
+        this.displayTargetList();
+        await this.convertTimes();
+        
+        // 显示添加成功提示
+        this.showAddSuccess(country);
+        
+        // 高亮按钮
+        const btn = document.querySelector(`.btn-region[data-country="${country}"]`);
+        if (btn) {
+            btn.classList.add('added');
+            setTimeout(() => {
+                btn.classList.remove('added');
+            }, 2000);
+        }
     }
 }
 
