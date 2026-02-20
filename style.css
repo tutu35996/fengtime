@@ -448,6 +448,16 @@ header p {
     margin-left: auto;
 }
 
+.dropdown-item .city-badge {
+    font-size: 0.625rem;
+    padding: 2px 6px;
+    background: var(--primary);
+    color: white;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-weight: 500;
+}
+
 /* Time Inputs */
 .main-times-container {
     display: grid;
