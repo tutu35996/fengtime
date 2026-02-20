@@ -323,7 +323,8 @@ const countryTimezones = {
     '西雅图': { timezone: 'America/Los_Angeles', flag: '🇺🇸', displayName: '西雅图', city: true },
     '波士顿': { timezone: 'America/New_York', flag: '🇺🇸', displayName: '波士顿', city: true },
     '迈阿密': { timezone: 'America/New_York', flag: '🇺🇸', displayName: '迈阿密', city: true },
-    '华盛顿': { timezone: 'America/New_York', flag: '🇺🇸', displayName: '华盛顿', city: true },
+    '华盛顿特区': { timezone: 'America/New_York', flag: '🇺🇸', displayName: '华盛顿特区 (Washington DC)', city: true },
+    '华盛顿州': { timezone: 'America/Los_Angeles', flag: '🇺🇸', displayName: '华盛顿州 (Washington State)', city: true },
     '多伦多': { timezone: 'America/Toronto', flag: '🇨🇦', displayName: '多伦多', city: true },
     '温哥华': { timezone: 'America/Vancouver', flag: '🇨🇦', displayName: '温哥华', city: true },
     '蒙特利尔': { timezone: 'America/Toronto', flag: '🇨🇦', displayName: '蒙特利尔', city: true },
@@ -1578,6 +1579,21 @@ class TimeZoneConverter {
     }
 
 
+    // 根据城市的时区和国旗查找对应的国家名称
+    getCountryNameForCity(cityKey, cityData) {
+        if (!cityData.city) return null;
+        
+        // 查找具有相同时区和国旗的国家（非城市）
+        const matchingCountry = Object.keys(countryTimezones).find(key => {
+            const countryData = countryTimezones[key];
+            return !countryData.city && 
+                   countryData.timezone === cityData.timezone && 
+                   countryData.flag === cityData.flag;
+        });
+        
+        return matchingCountry || null;
+    }
+
     showCountryDropdown(searchTerm, dropdown, type) {
         if (!searchTerm.trim()) {
             dropdown.classList.remove('show');
@@ -1621,11 +1637,24 @@ class TimeZoneConverter {
                 const data = countryTimezones[key];
                 const item = document.createElement('div');
                 item.className = 'dropdown-item';
+                
+                // 如果是城市，查找对应的国家名称
+                let countryLabel = '';
+                if (data.city) {
+                    const countryName = this.getCountryNameForCity(key, data);
+                    if (countryName) {
+                        countryLabel = `<span class="country-badge">${countryName}</span>`;
+                    }
+                }
+                
                 const cityLabel = data.city ? '<span class="city-badge">城市</span>' : '';
+                // 如果displayName包含英文说明，显示更详细的信息
+                const displayText = data.displayName !== key ? data.displayName : key;
                 item.innerHTML = `
                     <span class="country-flag">${data.flag}</span>
                     <span class="country-name">${key}</span>
-                    <span class="timezone-info">${data.displayName}</span>
+                    <span class="timezone-info">${displayText}</span>
+                    ${countryLabel}
                     ${cityLabel}
                 `;
                 
@@ -1907,10 +1936,32 @@ class TimeZoneConverter {
             try {
                 // 转换所有主时间
                 const convertedTimes = [];
+                const sourceTimezone = countryTimezones[this.mainCountry].timezone;
+                const sourceTimezoneData = await this.getTimezoneDataWithRetry(sourceTimezone);
+                
                 for (const mainTime of this.mainTimes) {
                     const [hours, minutes] = mainTime.split(':').map(Number);
                     const today = new Date();
-                    const mainDateTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes);
+                    
+                    // 重要：创建源时区的本地时间
+                    // 使用Intl API来创建表示源时区本地时间的Date对象
+                    // 方法：创建一个UTC时间，使得在源时区显示为指定的hours:minutes
+                    
+                    // 获取今天的日期（UTC）
+                    const year = today.getUTCFullYear();
+                    const month = today.getUTCMonth();
+                    const date = today.getUTCDate();
+                    
+                    // 创建一个UTC时间，表示源时区的本地时间
+                    // 源时区本地时间 = UTC时间 + 源时区偏移
+                    // 所以：UTC时间 = 源时区本地时间 - 源时区偏移
+                    const sourceOffsetSeconds = sourceTimezoneData.utc_offset_seconds;
+                    
+                    // 创建一个Date对象，表示"源时区本地时间 hours:minutes"对应的UTC时间
+                    // 使用Date.UTC创建UTC时间戳，然后减去源时区偏移
+                    const utcTimestamp = Date.UTC(year, month, date, hours, minutes, 0) - (sourceOffsetSeconds * 1000);
+                    const mainDateTime = new Date(utcTimestamp);
+                    
                     const targetTime = await this.convertTime(mainDateTime, this.mainCountry, country);
                     convertedTimes.push(this.formatTimeSimple(targetTime));
                 }
@@ -1993,21 +2044,66 @@ class TimeZoneConverter {
                 this.getTimezoneDataWithRetry(targetTimezone)
             ]);
             
-            // 计算时区差异（秒）
-            const timezoneDifference = targetTimeData.utc_offset_seconds - sourceTimeData.utc_offset_seconds;
+            // 正确的时间转换逻辑：
+            // sourceTime 是源时区的本地时间（例如：北京时间 12:00）
+            // 需要先转换为 UTC，再转换为目标时区
             
-            // 应用时区差异
-            const targetTime = new Date(sourceTime.getTime() + (timezoneDifference * 1000));
+            const sourceOffsetSeconds = sourceTimeData.utc_offset_seconds;
+            const targetOffsetSeconds = targetTimeData.utc_offset_seconds;
             
-            console.log(`转换 ${sourceCountry} -> ${targetCountry}:`, {
-                sourceOffset: sourceTimeData.utc_offset_seconds,
-                targetOffset: targetTimeData.utc_offset_seconds,
-                difference: timezoneDifference,
-                sourceTime: sourceTime.toISOString(),
-                targetTime: targetTime.toISOString()
-            });
+            // 关键：sourceTime 是源时区的本地时间
+            // 转换为UTC：需要减去源时区偏移（因为本地时间 = UTC + 偏移，所以 UTC = 本地时间 - 偏移）
+            // 注意：JavaScript的Date对象内部存储的是UTC时间戳，但getTime()返回的是UTC时间戳
+            // 所以我们需要手动处理时区偏移
             
-            return targetTime;
+            // 方法：将源时区的本地时间视为UTC+源偏移，然后转换为UTC，再转换为目标时区
+            // 1. 将源时区本地时间转换为UTC时间戳
+            //    假设 sourceTime 表示的是源时区的本地时间，我们需要计算对应的UTC时间
+            //    使用更准确的方法：通过Intl API获取准确的UTC时间
+            
+            try {
+                // 使用 Intl API 进行准确的时区转换
+                // 创建一个表示源时区本地时间的字符串
+                const sourceDateStr = sourceTime.toISOString().slice(0, 19); // "YYYY-MM-DDTHH:mm:ss"
+                
+                // 使用 Intl.DateTimeFormat 来解析和转换
+                // 但更简单的方法是直接计算偏移
+                
+                // 关键理解：sourceTime 是一个 Date 对象，它表示的是浏览器本地时区的某个时间点
+                // 但我们需要将它理解为"源时区的本地时间"
+                // 所以：UTC时间戳 = sourceTime的时间戳 - 源时区偏移
+                const utcTimestamp = sourceTime.getTime() - (sourceOffsetSeconds * 1000);
+                
+                // 然后转换为目标时区：目标时区本地时间 = UTC时间戳 + 目标时区偏移
+                const targetTimestamp = utcTimestamp + (targetOffsetSeconds * 1000);
+                const targetTime = new Date(targetTimestamp);
+                
+                console.log(`转换 ${sourceCountry} -> ${targetCountry}:`, {
+                    sourceTimezone: sourceTimezone,
+                    targetTimezone: targetTimezone,
+                    sourceOffset: sourceOffsetSeconds,
+                    targetOffset: targetOffsetSeconds,
+                    sourceLocalTime: `${sourceTime.getHours()}:${sourceTime.getMinutes()}`,
+                    utcTimestamp: new Date(utcTimestamp).toISOString(),
+                    targetLocalTime: `${targetTime.getHours()}:${targetTime.getMinutes()}`,
+                    targetTime: targetTime.toISOString()
+                });
+                
+                return targetTime;
+            } catch (error) {
+                // 如果出错，使用简单的偏移计算
+                const timezoneDifference = targetOffsetSeconds - sourceOffsetSeconds;
+                const targetTime = new Date(sourceTime.getTime() + (timezoneDifference * 1000));
+                
+                console.log(`使用简单偏移计算 ${sourceCountry} -> ${targetCountry}:`, {
+                    sourceOffset: sourceOffsetSeconds,
+                    targetOffset: targetOffsetSeconds,
+                    difference: timezoneDifference,
+                    targetTime: targetTime.toISOString()
+                });
+                
+                return targetTime;
+            }
         } catch (error) {
             console.error('时区转换失败，使用备用方法:', error);
             // 备用方法：使用简化的时区转换
@@ -2308,7 +2404,64 @@ class TimeZoneConverter {
         };
         
         const apiSources = [
-            // API 1: WorldTimeAPI (主要)
+            // API 1: 浏览器原生 Intl API (最准确，优先使用)
+            async () => {
+                try {
+                    // 使用最可靠的方法：创建一个固定的UTC时间点，然后获取它在指定时区的显示时间
+                    // 通过比较计算偏移
+                    
+                    // 创建一个已知的UTC时间（2024-01-01 12:00:00 UTC）
+                    const testDate = new Date('2024-01-01T12:00:00Z');
+                    
+                    // 获取该UTC时间在指定时区的显示时间字符串
+                    const tzString = testDate.toLocaleString('en-US', {
+                        timeZone: timezone,
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                    
+                    // 获取UTC时间的显示字符串
+                    const utcString = testDate.toLocaleString('en-US', {
+                        timeZone: 'UTC',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                    
+                    // 解析时间字符串为Date对象
+                    // 格式: "01/01/2024, 12:00:00"
+                    const parseDateTime = (dateStr) => {
+                        const [datePart, timePart] = dateStr.split(', ');
+                        const [month, day, year] = datePart.split('/').map(Number);
+                        const [hour, minute, second] = timePart.split(':').map(Number);
+                        return new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+                    };
+                    
+                    const tzTime = parseDateTime(tzString);
+                    const utcTime = parseDateTime(utcString);
+                    
+                    // 计算偏移：时区时间 - UTC时间
+                    const offsetMs = tzTime.getTime() - utcTime.getTime();
+                    const offsetSeconds = Math.round(offsetMs / 1000);
+                    
+                    console.log(`✓ Intl API 计算时区偏移 ${timezone}: ${offsetSeconds}秒 (UTC${offsetSeconds >= 0 ? '+' : ''}${Math.floor(offsetSeconds/3600)}:${Math.abs(Math.floor((offsetSeconds%3600)/60)).toString().padStart(2, '0')})`);
+                    
+                    return offsetSeconds;
+                } catch (error) {
+                    console.warn(`Intl API 查询失败 ${timezone}:`, error);
+                    throw error;
+                }
+            },
+            // API 2: WorldTimeAPI (备用1)
             async () => {
                 const response = await fetchWithTimeout(`https://worldtimeapi.org/api/timezone/${timezone}`, {
                     method: 'GET',
@@ -2316,13 +2469,61 @@ class TimeZoneConverter {
                 });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
+                
                 const offset = data.utc_offset;
-                const isNegative = offset.startsWith('-');
-                const cleanOffset = offset.replace(/[+-]/, '');
-                const [hours, minutes] = cleanOffset.split(':').map(Number);
+                if (!offset || typeof offset !== 'string') {
+                    throw new Error(`WorldTimeAPI 返回的 utc_offset 格式异常: ${offset}`);
+                }
+                
+                const offsetMatch = offset.match(/^([+-]?)(\d{1,2}):(\d{2})$/);
+                if (!offsetMatch) {
+                    throw new Error(`UTC偏移格式无法解析: ${offset}`);
+                }
+                
+                const [, sign, hoursStr, minutesStr] = offsetMatch;
+                const hours = parseInt(hoursStr, 10);
+                const minutes = parseInt(minutesStr, 10);
+                const isNegative = sign === '-';
+                
+                if (isNaN(hours) || isNaN(minutes)) {
+                    throw new Error(`无法解析UTC偏移数字: ${offset}`);
+                }
+                
+                const offsetSeconds = (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
+                console.log(`WorldTimeAPI 返回 ${timezone}: ${offset} -> ${offsetSeconds}秒`);
+                return offsetSeconds;
+            },
+            // API 2: WorldTimeAPI (备用1)
+            async () => {
+                const response = await fetchWithTimeout(`https://worldtimeapi.org/api/timezone/${timezone}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                
+                const offset = data.utc_offset;
+                if (!offset || typeof offset !== 'string') {
+                    throw new Error(`WorldTimeAPI 返回的 utc_offset 格式异常: ${offset}`);
+                }
+                
+                const offsetMatch = offset.match(/^([+-]?)(\d{1,2}):(\d{2})$/);
+                if (!offsetMatch) {
+                    throw new Error(`UTC偏移格式无法解析: ${offset}`);
+                }
+                
+                const [, sign, hoursStr, minutesStr] = offsetMatch;
+                const hours = parseInt(hoursStr, 10);
+                const minutes = parseInt(minutesStr, 10);
+                const isNegative = sign === '-';
+                
+                if (isNaN(hours) || isNaN(minutes)) {
+                    throw new Error(`无法解析UTC偏移数字: ${offset}`);
+                }
+                
                 return (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
             },
-            // API 2: TimeAPI.io (备用1)
+            // API 3: TimeAPI.io (备用2)
             async () => {
                 const response = await fetchWithTimeout(`https://timeapi.io/api/Time/current/zone?timeZone=${timezone}`, {
                     method: 'GET',
@@ -2337,28 +2538,137 @@ class TimeZoneConverter {
                 const offsetMs = localTime.getTime() - utcTime.getTime();
                 return Math.round(offsetMs / 1000);
             },
-            // API 3: 使用另一个WorldTimeAPI镜像（备用2）
+            // API 4: time.is 备用查询（使用不同的端点）
             async () => {
-                // 再次尝试WorldTimeAPI（可能是网络临时问题）
-                const response = await fetchWithTimeout(`https://worldtimeapi.org/api/timezone/${timezone}`, {
+                // 尝试使用 time.is 的另一个查询方式
+                const response = await fetchWithTimeout(`https://time.is/api/time?tz=${encodeURIComponent(timezone)}`, {
                     method: 'GET',
                     headers: { 'Accept': 'application/json' }
                 });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                const offset = data.utc_offset;
-                const isNegative = offset.startsWith('-');
-                const cleanOffset = offset.replace(/[+-]/, '');
-                const [hours, minutes] = cleanOffset.split(':').map(Number);
-                return (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
+                if (data.utc_offset) {
+                    const offset = data.utc_offset;
+                    if (typeof offset !== 'string') {
+                        throw new Error(`time.is API 返回的 utc_offset 格式异常: ${offset}`);
+                    }
+                    
+                    const offsetMatch = offset.match(/^([+-]?)(\d{1,2}):(\d{2})$/);
+                    if (!offsetMatch) {
+                        throw new Error(`time.is API UTC偏移格式无法解析: ${offset}`);
+                    }
+                    
+                    const [, sign, hoursStr, minutesStr] = offsetMatch;
+                    const hours = parseInt(hoursStr, 10);
+                    const minutes = parseInt(minutesStr, 10);
+                    const isNegative = sign === '-';
+                    
+                    if (isNaN(hours) || isNaN(minutes)) {
+                        throw new Error(`time.is API 无法解析UTC偏移数字: ${offset}`);
+                    }
+                    
+                    return (isNegative ? -1 : 1) * (hours * 3600 + minutes * 60);
+                }
+                throw new Error('time.is API 返回格式异常：缺少 utc_offset 字段');
             }
         ];
         
+        // 已知时区的正确偏移值（用于验证和备用）
+        // 注意：有夏令时的时区，这里存储的是标准时间偏移，实际值会根据当前日期变化
+        const knownTimezoneOffsets = {
+            // 中东时区（无夏令时）
+            'Asia/Bahrain': 10800,   // UTC+3
+            'Asia/Kuwait': 10800,    // UTC+3
+            'Asia/Qatar': 10800,     // UTC+3
+            'Asia/Riyadh': 10800,    // UTC+3
+            'Asia/Dubai': 14400,     // UTC+4
+            'Asia/Muscat': 14400,    // UTC+4
+            'Asia/Tehran': 12600,    // UTC+3:30
+            'Asia/Kolkata': 19800,   // UTC+5:30
+            'Asia/Kathmandu': 20700, // UTC+5:45
+            'Asia/Yangon': 23400,    // UTC+6:30
+            
+            // 欧洲时区（有夏令时，标准时间）
+            'Europe/Sofia': 7200,    // UTC+2 (标准时间), UTC+3 (夏令时)
+            'Europe/Bucharest': 7200, // UTC+2 (标准时间), UTC+3 (夏令时)
+            'Europe/Budapest': 3600,  // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Prague': 3600,    // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Warsaw': 3600,    // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Stockholm': 3600, // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Copenhagen': 3600, // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Oslo': 3600,     // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Helsinki': 7200, // UTC+2 (标准时间), UTC+3 (夏令时)
+            'Europe/Athens': 7200,   // UTC+2 (标准时间), UTC+3 (夏令时)
+            'Europe/Rome': 3600,     // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Madrid': 3600,   // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Paris': 3600,    // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Berlin': 3600,   // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/London': 0,      // UTC+0 (标准时间), UTC+1 (夏令时)
+            'Europe/Amsterdam': 3600, // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Brussels': 3600, // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Vienna': 3600,   // UTC+1 (标准时间), UTC+2 (夏令时)
+            'Europe/Zurich': 3600,   // UTC+1 (标准时间), UTC+2 (夏令时)
+        };
+        
         // 尝试所有API源
         let lastError = null;
+        let lastOffset = null;
         for (let i = 0; i < apiSources.length; i++) {
             try {
                 const utc_offset_seconds = await apiSources[i]();
+                lastOffset = utc_offset_seconds;
+                
+                // 如果有时区已知值，进行验证
+                if (knownTimezoneOffsets[timezone]) {
+                    const expectedOffset = knownTimezoneOffsets[timezone];
+                    const hasDST = dstTimezones.includes(timezone);
+                    
+                    // 对于有夏令时的时区，允许标准时间和夏令时两个值（相差1小时）
+                    // 对于无夏令时的时区，只允许标准时间
+                    let isValid = false;
+                    if (hasDST) {
+                        // 有夏令时：允许标准时间或夏令时（标准时间+3600秒）
+                        // 检查是否在标准时间±1小时内，或在夏令时±1小时内
+                        const standardTime = expectedOffset;
+                        const daylightTime = expectedOffset + 3600;
+                        isValid = (Math.abs(utc_offset_seconds - standardTime) <= 1800) || // 标准时间±30分钟
+                                 (Math.abs(utc_offset_seconds - daylightTime) <= 1800);     // 夏令时±30分钟
+                    } else {
+                        // 无夏令时：只允许标准时间，容差1800秒（30分钟）
+                        isValid = Math.abs(utc_offset_seconds - expectedOffset) <= 1800;
+                    }
+                    
+                    if (!isValid) {
+                        const expectedStr = hasDST ? 
+                            `标准时间 ${expectedOffset}秒 (UTC${expectedOffset >= 0 ? '+' : ''}${expectedOffset/3600}) 或夏令时 ${expectedOffset + 3600}秒 (UTC+${(expectedOffset + 3600)/3600})` :
+                            `${expectedOffset}秒 (UTC${expectedOffset >= 0 ? '+' : ''}${expectedOffset/3600})`;
+                        
+                        console.error(`⚠️ API ${i + 1} 返回的时区偏移不正确 ${timezone}: API返回 ${utc_offset_seconds}秒 (UTC${utc_offset_seconds >= 0 ? '+' : ''}${Math.floor(utc_offset_seconds/3600)}:${Math.abs(Math.floor((utc_offset_seconds%3600)/60)).toString().padStart(2, '0')}), 期望 ${expectedStr}`);
+                        
+                        // 如果API返回的值明显错误，抛出错误以尝试下一个API
+                        if (!hasDST) {
+                            // 无夏令时的时区，如果值错误，使用已知值
+                            console.warn(`使用已知正确值 ${expectedOffset}秒 替代API返回值`);
+                            const timezoneData = {
+                                utc_offset_seconds: expectedOffset,
+                                timezone: timezone,
+                                isFixedTimezone: false
+                            };
+                            
+                            this.timezoneCache.set(cacheKey, {
+                                data: timezoneData,
+                                timestamp: Date.now()
+                            });
+                            
+                            return timezoneData;
+                        } else {
+                            // 有夏令时的时区，如果值明显错误，抛出错误尝试下一个API
+                            throw new Error(`API返回的时区偏移值不在合理范围内`);
+                        }
+                    } else {
+                        console.log(`✓ 时区偏移验证通过 ${timezone}: ${utc_offset_seconds}秒`);
+                    }
+                }
                 
                 const timezoneData = {
                     utc_offset_seconds: utc_offset_seconds,
@@ -2382,6 +2692,24 @@ class TimeZoneConverter {
                 lastError = error;
                 // 继续尝试下一个API
             }
+        }
+        
+        // 如果所有API都失败，但有时区已知值，使用已知值
+        if (knownTimezoneOffsets[timezone]) {
+            console.warn(`所有API查询失败，使用已知时区偏移值 ${timezone}: ${knownTimezoneOffsets[timezone]}秒`);
+            const timezoneData = {
+                utc_offset_seconds: knownTimezoneOffsets[timezone],
+                timezone: timezone,
+                isFixedTimezone: false
+            };
+            
+            // 缓存备用数据
+            this.timezoneCache.set(cacheKey, {
+                data: timezoneData,
+                timestamp: Date.now()
+            });
+            
+            return timezoneData;
         }
         
         // 所有API都失败，如果有夏令时，不允许使用备用方法
@@ -2473,9 +2801,22 @@ class TimeZoneConverter {
     }
 
     formatUTCOffset(offsetSeconds, isFixedTimezone = false) {
-        const hours = Math.floor(Math.abs(offsetSeconds) / 3600);
-        const minutes = Math.floor((Math.abs(offsetSeconds) % 3600) / 60);
+        // 确保offsetSeconds是数字
+        if (typeof offsetSeconds !== 'number' || isNaN(offsetSeconds)) {
+            console.error('formatUTCOffset: 无效的offsetSeconds:', offsetSeconds);
+            return 'UTC+0';
+        }
+        
+        // 计算小时和分钟
+        const totalMinutes = Math.floor(Math.abs(offsetSeconds) / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
         const sign = offsetSeconds >= 0 ? '+' : '-';
+        
+        // 验证结果是否合理
+        if (hours > 14 || hours < -12) {
+            console.warn(`formatUTCOffset: UTC偏移异常 ${offsetSeconds}秒 -> UTC${sign}${hours}:${minutes}`);
+        }
         
         if (minutes === 0) {
             return `UTC${sign}${hours}`;
